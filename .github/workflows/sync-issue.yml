@@ -10,7 +10,7 @@ jobs:
         id: add-issue-to-projects-beta
         with:
           result-encoding: string
-          github-token: ${{ inputs.github-token }}
+          github-token: ${{ secrets.SYNC_PROJECTS_BETA }}
           script: |
             const variables = {
               projectId: "PN_kwHOA3J0ac4AAvWk",
