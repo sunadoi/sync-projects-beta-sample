@@ -6,6 +6,9 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
+      - name: Output result
+        run: |
+          echo '${{ github.event }}'
       - uses: actions/github-script@v5
         id: add-issue-to-projects-beta
         with:
