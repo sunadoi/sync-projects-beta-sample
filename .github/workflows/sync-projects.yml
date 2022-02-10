@@ -1,27 +1,25 @@
-name: "sync pr to projects beta"
+name: "sync issue to projects beta"
 on:
+  issues:
+    types: [opened]
   pull_request:
     types: [opened]
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Output result
-        run: |
-          echo "${{ github.event_name }} === pull_request ? 'PN_kwHOA3J0ac4AAvhN' : 'PN_kwHOA3J0ac4AAvWk'"
       - uses: actions/github-script@v5
         with:
           result-encoding: string
           github-token: ${{ secrets.SYNC_PROJECTS_BETA }}
           script: |
-            const projectId = "${{ github.event_name }}" === "pull_request" ? "PN_kwHOA3J0ac4AAvhN" : "PN_kwHOA3J0ac4AAvWk"
             const variables = {
-              projectId: "PN_kwHOA3J0ac4AAvWk",
-              issueId:  "${{ github.event.pull_request.node_id }}"
+              projectId: "${{ github.event_name }}" === "pull_request" ? "PN_kwHOA3J0ac4AAvhN" : "PN_kwHOA3J0ac4AAvWk",
+              itemId:  "${{ github.event_name }}" === "pull_request" ? "${{ github.event.pull_request.node_id }}" : "${{ github.event.issue.node_id }}"
             };
             const mutation = `
-              mutation($projectId: ID!, $issueId: ID!) {
-                addProjectNextItem(input: {projectId: $projectId, contentId: $issueId}) {
+              mutation($projectId: ID!, $itemId: ID!) {
+                addProjectNextItem(input: {projectId: $projectId, contentId: $itemId}) {
                   projectNextItem {
                     id
                   }
