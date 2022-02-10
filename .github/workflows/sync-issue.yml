@@ -1,0 +1,31 @@
+name: "sync issue to projects beta"
+on:
+  issues:
+    types: [opened]
+jobs:
+  sync:
+    steps:
+      - uses: actions/github-script@v5
+        id: add-issue-to-projects-beta
+        with:
+          result-encoding: string
+          github-token: ${{ inputs.github-token }}
+          script: |
+            const variables = {
+              projectId: "PN_kwHOA3J0ac4AAvWk",
+              issueId:  ${{github.event.number}}
+            };
+            const mutation = `
+              mutation($projectId: ID!, $issueId: ID!) {
+                addProjectNextItem(input: {projectId: $projectId, contentId: $issueId}) {
+                  projectNextItem {
+                    id
+                  }
+                }
+              }
+            `;
+            const result = await github.graphql(mutation, variables);
+            if (result && result.addProjectNextItem && result.addProjectNextItem.projectNextItem) {
+              return result.addProjectNextItem.projectNextItem.id;
+            }
+            return '';
