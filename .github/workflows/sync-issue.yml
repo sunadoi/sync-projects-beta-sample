@@ -6,16 +6,15 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Output result
-        run: |
-          echo "${{ github.event_name === "pull_request" ? 'PN_kwHOA3J0ac4AAvhN' : 'PN_kwHOA3J0ac4AAvWk'}}"
       - uses: actions/github-script@v5
         with:
           result-encoding: string
           github-token: ${{ secrets.SYNC_PROJECTS_BETA }}
           script: |
+            const projectId = "${{ github.event_name }}" === "pull_request" ? "PN_kwHOA3J0ac4AAvhN" : "PN_kwHOA3J0ac4AAvWk"
+            console.log(projectId)
             const variables = {
-              projectId: "PN_kwHOA3J0ac4AAvWk",
+              projectId: projectId,
               issueId:  "${{ github.event.issue.node_id }}"
             };
             const mutation = `
