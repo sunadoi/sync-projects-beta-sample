@@ -9,6 +9,7 @@ jobs:
       - uses: actions/github-script@v5
         with:
           result-encoding: string
+          github-token: ${{ secrets.SYNC_PROJECTS_BETA }}
           script: |
             const variables = {
               projectId: "PN_kwHOA3J0ac4AAvWk",
