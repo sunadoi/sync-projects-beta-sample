@@ -24,8 +24,4 @@ jobs:
                 }
               }
             `;
-            const result = await github.graphql(mutation, variables);
-            if (result && result.addProjectNextItem && result.addProjectNextItem.projectNextItem) {
-              return result.addProjectNextItem.projectNextItem.id;
-            }
-            return '';
+            await github.graphql(mutation, variables);
