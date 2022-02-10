@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Output result
         run: |
-          echo '${{ github.event.node_id }}'
+          echo '${{ github.event.issue.node_id }}'
       - uses: actions/github-script@v5
         id: add-issue-to-projects-beta
         with:
