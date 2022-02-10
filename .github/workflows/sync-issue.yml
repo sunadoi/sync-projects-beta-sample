@@ -6,6 +6,9 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
+      - name: Output result
+        run: |
+          echo "${{ github.event_name }} === pull_request ? 'PN_kwHOA3J0ac4AAvhN' : 'PN_kwHOA3J0ac4AAvWk'"
       - uses: actions/github-script@v5
         with:
           result-encoding: string
