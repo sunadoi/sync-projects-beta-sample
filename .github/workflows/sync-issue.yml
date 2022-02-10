@@ -14,7 +14,7 @@ jobs:
           script: |
             const variables = {
               projectId: "PN_kwHOA3J0ac4AAvWk",
-              issueId:  "${{github.event.number}}"
+              issueId:  "I_kwDOG0h-vc5DXJVk"
             };
             const mutation = `
               mutation($projectId: ID!, $issueId: ID!) {
