@@ -35,7 +35,7 @@ jobs:
           script: |
             console.log("${{ steps.project-id.outputs.result }}")
             const variables = {
-              projectId: "${{ github.event_name }}" === "pull_request" ? "PN_kwHOA3J0ac4AAvhN" : "PN_kwHOA3J0ac4AAvWk",
+              projectId: "${{ steps.project-id.outputs.result }}",
               itemId:  "${{ github.event_name }}" === "pull_request" ? "${{ github.event.pull_request.node_id }}" : "${{ github.event.issue.node_id }}"
             };
             const mutation = `
