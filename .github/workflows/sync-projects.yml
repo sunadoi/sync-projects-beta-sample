@@ -27,12 +27,14 @@ jobs:
               login: 'sunadoi',
               projectNumber: "${{ github.event_name }}" === "issues" ? 1 : 2
             })
+            console.log(result.user.projectNext.id)
             return result.user.projectNext.id
       - uses: actions/github-script@v5
         with:
           result-encoding: string
           github-token: ${{ secrets.SYNC_PROJECTS_BETA }}
           script: |
+            console.log("${{ steps.project-id.outputs.result }}")
             const variables = {
               projectId: "${{ steps.project-id.outputs.result }}"
               itemId:  "${{ github.event_name }}" === "pull_request" ? "${{ github.event.pull_request.node_id }}" : "${{ github.event.issue.node_id }}"
