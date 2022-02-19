@@ -13,6 +13,28 @@ jobs:
           result-encoding: string
           github-token: ${{ secrets.SYNC_PROJECTS_BETA }}
           script: |
+            const query = `
+              query($login: String!, $projectNumber: Int!) {
+                user(login: $login) {
+                  projectNext(number: $projectNumber) {
+                    id
+                  }
+                }
+              }
+            `
+
+            const result = await github.graphql(query, {
+              login: 'sunadoi',
+              projectNumber: 1
+            })
+
+            console.log(result.user.projectNext.id)
+            return result.user.projectNext.id
+      - uses: actions/github-script@v5
+        with:
+          result-encoding: string
+          github-token: ${{ secrets.SYNC_PROJECTS_BETA }}
+          script: |
             const variables = {
               projectId: "${{ github.event_name }}" === "pull_request" ? "PN_kwHOA3J0ac4AAvhN" : "PN_kwHOA3J0ac4AAvWk",
               itemId:  "${{ github.event_name }}" === "pull_request" ? "${{ github.event.pull_request.node_id }}" : "${{ github.event.issue.node_id }}"
