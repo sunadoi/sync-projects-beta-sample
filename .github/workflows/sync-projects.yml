@@ -8,46 +8,9 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v5
-        id: project-id
+      - uses: sunadoi/add-projects-beta
         with:
-          result-encoding: string
           github-token: ${{ secrets.SYNC_PROJECTS_BETA }}
-          script: |
-            const query = `
-              query($login: String!, $projectNumber: Int!) {
-                user(login: $login) {
-                  projectNext(number: $projectNumber) {
-                    id
-                  }
-                }
-              }
-            `
-            const result = await github.graphql(query, {
-              login: 'sunadoi',
-              projectNumber: "${{ github.event_name }}" === "issues" ? 1 : 2
-            })
-            return result.user.projectNext.id
-      - uses: actions/github-script@v5
-        with:
-          result-encoding: string
-          github-token: ${{ secrets.SYNC_PROJECTS_BETA }}
-          script: |
-            const variables = {
-              projectId: "${{ steps.project-id.outputs.result }}",
-              itemId:  "${{ github.event_name }}" === "pull_request" ? "${{ github.event.pull_request.node_id }}" : "${{ github.event.issue.node_id }}"
-            };
-            const mutation = `
-              mutation($projectId: ID!, $itemId: ID!) {
-                addProjectNextItem(input: {projectId: $projectId, contentId: $itemId}) {
-                  projectNextItem {
-                    id
-                  }
-                }
-              }
-            `;
-            const result = await github.graphql(mutation, variables);
-            if (result && result.addProjectNextItem && result.addProjectNextItem.projectNextItem) {
-              return result.addProjectNextItem.projectNextItem.id;
-            }
-            return '';
+          project-owner: "sunadoi"
+          project-number: 1
+          content-id: ${{ github.event.pull_request.node_id }}
